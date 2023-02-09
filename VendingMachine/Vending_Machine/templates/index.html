@@ -1,0 +1,199 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="container-fluid pb-3">
+    <div class="d-grid gap-3" style="grid-template-columns: 1fr 1fr;">
+        <div class="bg-light border rounded-3">
+            <br><br><table>
+                {% for i in productos %}
+                  {% if forloop.first %}
+                  <tr>
+                  {% endif %}
+                    <td>{{ i.nombre_producto }}</td>
+                    <td>{{ i.precio }}</td>
+                    <td>{{ i.codigo_producto }}</td>
+                  {% if forloop.counter0|divisibleby:3 or forloop.last %}
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </table><br><br><br><br><br><br><br><br>
+        </div>
+
+
+        
+        <div class="bg-light border rounded-3">
+            <br><br>
+            <form class="d-flex justify-content-center col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 w-50 mx-auto">
+                <input id="codigoDeProducto" class="form-control" placeholder="Código de producto" aria-label="Search">
+            </form>
+            <br>
+            <div class="justify-content-center mx-auto">
+                <p>Seleccione la forma de pago:</p>
+                
+                <button id="efectivo" class="btn btn-warning">Efectivo</button>
+                <button id="tarjeta" class="btn btn-warning">Tarjeta</button>
+                <button id="applePay" class="btn btn-warning">Apple Pay</button>
+                <button id="googlePay" class="btn btn-warning">Google Pay</button>
+            </div>
+
+            <div  id="formEfectivo">
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">5 céntimos:</p>
+                <button id="menos5Centimos" class="btn btn-danger mx-2">-</button>
+                <input id="5Centimos" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas5Centimos" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">10 céntimos:</p>
+                <button id="menos10Centimos" class="btn btn-danger mx-2">-</button>
+                <input id="10Centimos" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas10Centimos" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">20 céntimos:</p>
+                <button id="menos20Centimos" class="btn btn-danger mx-2">-</button>
+                <input id="20Centimos" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas20Centimos" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">50 céntimos:</p>
+                <button id="menos50Centimos" class="btn btn-danger mx-2">-</button>
+                <input id="50Centimos" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas50Centimos" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">1 euro:</p>
+                <button id="menos1euro" class="btn btn-danger mx-2">-</button>
+                <input id="1euro" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas1euro" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">2 euros:</p>
+                <button id="menos2euros" class="btn btn-danger mx-2">-</button>
+                <input id="2euros" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="mas2euros" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">Billete 5 euros:</p>
+                <button id="menosBillete5euros" class="btn btn-danger mx-2">-</button>
+                <input id="5euros" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="masBillete5euros" class="btn btn-success mx-2">+</button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <p class="m-0">Billete 10 euros:</p>
+                <button id="menosBillete10euros" class="btn btn-danger mx-2">-</button>
+                <input id="10euros" type="number" class="form-control w-25 mx-2" value="0">
+                <button id="masBillete10euros" class="btn btn-success mx-2">+</button>
+            </div>
+                
+            
+            </div>
+
+            <div id="formTarjeta">
+
+            </div>
+
+        
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#efectivo').click(function(){
+            $('#formEfectivo').show();
+        });
+
+
+        $('#menos5Centimos').click(function(){
+            let valorActual = parseInt($('#5Centimos').val());
+            if (valorActual > 0) {
+                $('#5Centimos').val(valorActual - 1);
+            }
+        });
+        $('#mas5Centimos').click(function(){
+            let valorActual = parseInt($('#5Centimos').val());
+            $('#5Centimos').val(valorActual + 1);
+        });
+
+        $('#menos10Centimos').click(function(){
+            let valorActual = parseInt($('#10Centimos').val());
+            if (valorActual > 0) {
+                $('#10Centimos').val(valorActual - 1);
+            }
+        });
+        $('#mas10Centimos').click(function(){
+            let valorActual = parseInt($('#10Centimos').val());
+            $('#10Centimos').val(valorActual + 1);
+        });
+
+        $('#menos20Centimos').click(function(){
+            let valorActual = parseInt($('#20Centimos').val());
+            if (valorActual > 0) {
+                $('#20Centimos').val(valorActual - 1);
+            }
+        });
+        $('#mas20Centimos').click(function(){
+            let valorActual = parseInt($('#20Centimos').val());
+            $('#20Centimos').val(valorActual + 1);
+        });
+
+        $('#menos50Centimos').click(function(){
+            let valorActual = parseInt($('#50Centimos').val());
+            if (valorActual > 0) {
+                $('#50Centimos').val(valorActual - 1);
+            }
+        });
+        $('#mas50Centimos').click(function(){
+            let valorActual = parseInt($('#50Centimos').val());
+            $('#50Centimos').val(valorActual + 1);
+        });
+
+        $('#menos1euro').click(function(){
+            let valorActual = parseInt($('#1euro').val());
+            if (valorActual > 0) {
+                $('#1euro').val(valorActual - 1);
+            }
+        });
+        $('#mas1euro').click(function(){
+            let valorActual = parseInt($('#1euro').val());
+            $('#1euro').val(valorActual + 1);
+        });
+
+        $('#menos2euros').click(function(){
+            let valorActual = parseInt($('#2euros').val());
+            if (valorActual > 0) {
+                $('#2euros').val(valorActual - 1);
+            }
+        });
+        $('#mas2euros').click(function(){
+            let valorActual = parseInt($('#2euros').val());
+            $('#2euros').val(valorActual + 1);
+        });
+
+        $('#menosBillete5euros').click(function(){
+            let valorActual = parseInt($('#5euros').val());
+            if (valorActual > 0) {
+                $('#5euros').val(valorActual - 1);
+            }
+        });
+        $('#masBillete5euros').click(function(){
+            let valorActual = parseInt($('#5euros').val());
+            $('#5euros').val(valorActual + 1);
+        });
+
+        $('#menosBillete10euros').click(function(){
+            let valorActual = parseInt($('#10euros').val());
+            if (valorActual > 0) {
+                $('#10euros').val(valorActual - 1);
+            }
+        });
+        $('#masBillete10euros').click(function(){
+            let valorActual = parseInt($('#10euros').val());
+            $('#10euros').val(valorActual + 1);
+        });
+    })
+</script>
+
+{% endblock %}
