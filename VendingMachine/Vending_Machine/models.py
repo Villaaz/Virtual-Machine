@@ -8,3 +8,5 @@ class Producto(models.Model):
     num_comprados = models.IntegerField()
 
     
+
+    
