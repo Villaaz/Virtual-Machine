@@ -7,15 +7,16 @@
         <div class="bg-light border rounded-3">
             <br><br><table>
                 {% for i in productos %}
-                  {% if forloop.first %}
-                  <tr>
-                  {% endif %}
-                    <td>{{ i.nombre_producto }}</td>
-                    <td>{{ i.precio }}</td>
-                    <td>{{ i.codigo_producto }}</td>
-                  {% if forloop.counter0|divisibleby:3 or forloop.last %}
-                  </tr>
-                  {% endif %}
+                    {% if forloop.first %}
+                    <tr>
+                    {% endif %}
+                        <td>{{ i.nombre_producto }}</td>
+                        <td>{{ i.precio }}</td>
+                        <td>{{ i.codigo_producto }}</td>
+                        <td>{{ i.stock }}</td>
+                    {% if forloop.counter0|divisibleby:4 or forloop.last %}
+                    </tr>
+                    {% endif %}
                 {% endfor %}
 
               </table><br><br><br><br><br><br><br><br>
@@ -38,7 +39,7 @@
                 <button id="googlePay" class="btn btn-warning">Google Pay</button>
             </div>
 
-            <div  id="formEfectivo">
+            <div hidden id="formEfectivo">
             <div class="d-flex justify-content-between align-items-center my-3">
                 <p class="m-0">5 céntimos:</p>
                 <button id="menos5Centimos" class="btn btn-danger mx-2">-</button>
@@ -91,9 +92,54 @@
             
             </div>
 
-            <div id="formTarjeta">
-
+            <div  id="formTarjeta">
+                <div class="bg-light border rounded-3">
+                    <br>
+                    <form class="row g-3 mx-auto">
+                        <div class="col-12">
+                            <label for="nombreTitular" class="form-label">Nombre del titular de la tarjeta</label>
+                            <input type="text" class="form-control" id="nombreTitular" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="numeroTarjeta" class="form-label">Número de la tarjeta</label>
+                            <input type="text" class="form-control" id="numeroTarjeta" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="vencimiento" class="form-label">Fecha de vencimiento</label>
+                            <input type="text" class="form-control" id="vencimiento" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="condiciones" required>
+                                <label class="form-check-label" for="condiciones">
+                                    Acepto los términos y condiciones
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-warning">Pagar</button>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+                
             </div>
+
+            <!--<div hidden id="formApplePay">
+                <button type="submit">
+                    <img src="https://developer.apple.com/design/human-interface-guidelines/apple-pay/images/marketing/promote_marketing_apple_pay_button.png" alt="Pagar con Apple Pay">
+                </button>
+            </div>
+
+            <div hidden id="formGooglePay">
+                <button type="submit">
+                    <img src="https://developers.google.com/pay/api/images/buttons/google-pay-logo.png" alt="Pagar con Google Pay">
+                </button>
+            </div> -->
 
         
         </div>
@@ -101,6 +147,52 @@
 </div>
 
 <script>
+
+    var codigoDeProducto = document.getElementById("codigoDeProducto");
+    var formTarjeta = document.getElementById("formTarjeta");
+
+    formTarjeta.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Obtener el código de producto del formulario de tarjeta
+        var codigo_producto = codigoDeProducto.value;
+
+        // Buscar el objeto de producto correspondiente en la lista productos
+        var producto = null;
+        for (var i = 0; i < productos.length; i++) {
+            if (productos[i].codigo_producto === codigo_producto) {
+                producto = productos[i];
+                break;
+            }
+        }
+
+        // Actualizar el stock y el contador de compras
+        if (producto !== null) {
+            producto.stock -= 1;
+            producto.numero_comprados += 1;
+        }
+
+        // Enviar los datos del formulario de tarjeta al servidor
+        var data = new FormData(formTarjeta);
+        fetch("{% url 'pagar' %}", {
+            method: "POST",
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    });
+
+
+
+
+
+
+
     $(function(){
         $('#efectivo').click(function(){
             $('#formEfectivo').show();
@@ -198,3 +290,5 @@
 </script>
 
 {% endblock %}
+
+
