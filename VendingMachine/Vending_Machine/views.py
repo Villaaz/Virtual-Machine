@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Producto
+from django.views import generic
 
 def index(request):
     productos = Producto.objects.all()
@@ -15,3 +16,8 @@ def pagar(request):
         producto.save()
         return redirect('index')
     return redirect('index')
+
+class edit_producto(generic.UpdateView):
+    model = Producto
+    template_name_suffix = "-edit"
+    fields = ['precio']
