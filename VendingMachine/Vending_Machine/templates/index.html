@@ -92,7 +92,7 @@
             
             </div>
 
-            <div  id="formTarjeta">
+            <div id="formTarjeta">
                 <div class="bg-light border rounded-3">
                     <br>
                     <form class="row g-3 mx-auto">
@@ -186,12 +186,6 @@
                 console.error(error);
             });
     });
-
-
-
-
-
-
 
     $(function(){
         $('#efectivo').click(function(){
@@ -287,8 +281,36 @@
             $('#10euros').val(valorActual + 1);
         });
     })
+
+    function luhn_checksum(card_number) {
+    /*
+    Esta función calcula el dígito de verificación de una tarjeta utilizando el algoritmo de Luhn.
+    */
+    const digits = Array.from(card_number, Number);
+    const odd_digits = digits.slice(-1).concat(digits.slice(-3, -1).reverse());
+    const even_digits = digits.slice(0, -1).filter((_, i) => i % 2 === 0).map(digit => {
+      const doubled_digit = digit * 2;
+      return doubled_digit > 9 ? doubled_digit - 9 : doubled_digit;
+    });
+    const total = odd_digits.concat(even_digits).reduce((sum, digit) => sum + digit, 0);
+    return total % 10;
+    }
+    
+    function is_valid_card(card_number) {
+        /*
+        Esta función verifica si una tarjeta es válida utilizando el algoritmo de Luhn.
+        */
+        return luhn_checksum(card_number) === 0;
+    }
+    
+    // -------------------------- igualar card_number con el layout -----------------------------------------
+    const card_number = '4111111111111111';
+    if (is_valid_card(card_number)) {
+        console.log('La tarjeta es válida');
+    } else {
+        console.log('La tarjeta no es válida');
+    }
+
 </script>
 
 {% endblock %}
-
-

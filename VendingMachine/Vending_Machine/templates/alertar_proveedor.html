@@ -1,0 +1,8 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<a href="{% url 'zonaAdmin'%}">Volver atrás</a>
+<br>
+<input name="producto" placeholder="Escribe aquí el producto para alertar" required>
+<button type="button" onclick="alert('Se ha mandado la alerta')">Alertar provedoor</button>
+{% endblock %}
